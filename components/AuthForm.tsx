@@ -1,13 +1,16 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import {email, z} from "zod"
+import {z} from "zod"
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button"
 import {
   Form,
 } from "@/components/ui/form"
+import FormField from "./FormField";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const authFormSchema = (type: FormType) => {
   return z.object({
@@ -17,19 +20,32 @@ const authFormSchema = (type: FormType) => {
   })
 }
 const AuthForm = ({type} : {type: FormType}) => {
-
+  const router = useRouter()
   const formSchema = authFormSchema(type) 
   
     const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      name: "",
+      email: '',
+      password: ''
     },
   })
  
   function onSubmit(values: z.infer<typeof formSchema>) {
-    
-    console.log(values)
+    try{
+      if(type === 'sign-up') {
+        toast.success('Account created succesfully. Please sign in')
+        router.push('/sign-in')
+        console.log('SIGN UP', values)
+      }else {
+        console.log('SIGN IN', values)
+      }
+    }
+    catch(error){
+      console.log(error)
+      toast.error(`There was an error: ${error}`)
+    }
   }
 
   const isSign = type === 'sign-in'
@@ -43,9 +59,9 @@ const AuthForm = ({type} : {type: FormType}) => {
                 </div>
                 <h3>Practice jobs interview with AI</h3>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form" >
-        {!isSign && <p>Name</p>}
-        <p>Email</p>
-        <p>Password</p>
+        {!isSign && (<FormField control={form.control} name='name' label='Name' placeholder='Your Name' />)}
+          <FormField control={form.control} name='email' label='email' placeholder='Your Email Address' type="email" />
+          <FormField control={form.control} name='password' label='password' placeholder='Enter your password' type="password"/>
         <Button  className="btn"type="submit">{isSign ? 'Sign In' : 'Create an Account'}</Button>
       </form>
     </Form>
