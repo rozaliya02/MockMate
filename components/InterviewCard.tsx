@@ -3,6 +3,7 @@ import Image from "next/image";
 import { getRandomInterviewCover } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import DisplayTechItems from "./DisplayTechItems";
 
 const InterviewCard = ({interviewId, userId, role, type, techstack, createdAt} : InterviewCardProps) => {
     const feedback = null as Feedback | null; 
@@ -36,13 +37,14 @@ const InterviewCard = ({interviewId, userId, role, type, techstack, createdAt} :
                         {feedback?.finalAssessment || 'You havent taken the interview yet. Take it now to improve your skills.'} 
                     </p>
                </div>
-               <p>Tech Icons</p>
-               <Button className="btn-primary">
-                <Link href={feedback ? `/interview/${interviewId}/feedback` : `/interview/${interviewId}`}>
-                {feedback ? 'Check Feedback' : 'View Interview'}
-                
-                </Link>
-               </Button>
+                <div className="flex flex-row justify-between">
+                    <DisplayTechItems techStack={techstack}/>
+                <Button className="btn-primary">
+                    <Link href={feedback ? `/interview/${interviewId}/feedback` : `/interview/${interviewId}`}>
+                    {feedback ? 'Check Feedback' : 'View Interview'}
+                    </Link>
+                </Button>
+                </div>
                </div>
             </div>
     )

@@ -40,3 +40,7 @@ interface InterviewFormProps {
   techstack: string[];
   amount: number;
 }
+
+interface TechIconProps {
+  techStack: string[];
+}
