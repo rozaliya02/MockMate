@@ -32,6 +32,12 @@ interface InterviewCardProps {
 
 type FormType = "sign-in" | "sign-up";
 
+interface User {
+  name: string;
+  email: string;
+  id: string;
+}
+
 interface InterviewFormProps {
   interviewId: string;
   role: string;
